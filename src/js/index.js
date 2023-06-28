@@ -1,3 +1,4 @@
+window.addEventListener("DOMContentLoaded", getAndRenderRandomDrink);
 
 //fetch function
 
@@ -61,7 +62,11 @@ function renderRandomDrink(drinkObj) {
   drinkInstructions.textContent = drinkObj.strInstructions;
 }
 
-
+function getAndRenderRandomDrink() {
+  getRandomDrink().then(drinkObj => {
+    renderRandomDrink(drinkObj);
+  })
+}
 //{
 //    "ID": 2,
 //   "Drink Name": "Old Fashioned",
