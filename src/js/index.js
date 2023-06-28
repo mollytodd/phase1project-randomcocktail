@@ -1,7 +1,8 @@
+
 //fetch function
 
 const url = "https://www.thecocktaildb.com/api/json/v1/1/";
-const drinkURL = "/random.php"
+const randomDrinkURL = "/random.php"
 const alcoholic = "/filter.php?a=Alcoholic"
 const nonalcoholic = "/filter.php?a=Non_Alcoholic"
 
@@ -10,11 +11,15 @@ function allDrinks(drinkURL) {
       .then(response => response.json())
       .then(data => data.drinks[0].strDrinkThumb); //extract img src 
 }
-
+function getRandomDrink(){
+  return fetch(url + randomDrinkURL)
+  .then(response => response.json())
+  .then(data => data.drinks[0]);
+}
 
 //initializers
 
-allDrinks(url + `/random.php`).then((drinksArray) => {
+allDrinks(url + randomDrinkURL).then((drinksArray) => {
     //render all drinks)
 console.log(drinksArray)
 });
@@ -22,26 +27,25 @@ console.log(drinksArray)
 //dom selectors
 const fetchButton = document.querySelector("button")
 const hoverButton = document.querySelector("button")
-const drinkImage = document.querySelector("img")
-const cocktailDetails = document.querySelector(".cocktailDetails")
+const drinkImage = document.getElementById("DrinkImage");
+const drinkDescription = document.getElementById("drinkDescription");
+const drinkInstructions = document.getElementById("strInstructions")
 
 
 //event listeners
 hoverButton.addEventListener("mouseover", (event) => {
     hoverButton.style.color = "red";
   });
-  
+
   hoverButton.addEventListener("mouseout", (event) => {
     hoverButton.style.color = "white";
   });
 
-  fetchButton.addEventListener("click", (event) => {
-    allDrinks(url + "/random.php").then(drinksArray => {
-    renderRandomDrink(drinkSource);
-     // console.log(drinksArray)
-    })
-  })
-
+  fetchButton.addEventListener("click", () => {
+    getRandomDrink().then(drinkObj => {
+      renderRandomDrink(drinkObj);
+    });
+  });
 
 
 
@@ -50,11 +54,11 @@ hoverButton.addEventListener("mouseover", (event) => {
 
 
 //render functions
-const drinkDescription = document.querySelector(".")
 function renderRandomDrink(drinkObj) {
-
-  drinkImage.src = drinkObj;
-  drinkDescription.textContent = ""
+  console.log(" ~ file: index.js:56 ~ renderRandomDrink ~ drinkObj:", drinkObj)
+  drinkImage.src = drinkObj.strDrinkThumb;
+  drinkDescription.textContent = drinkObj.strDrink;
+  drinkInstructions.textContent = drinkObj.strInstructions;
 }
 
 
